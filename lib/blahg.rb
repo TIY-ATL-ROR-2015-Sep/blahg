@@ -6,13 +6,14 @@ require "blahg/tag"
 require "blahg/post_tag"
 require "blahg/importer"
 
+require "date"
 require "thor"
 require "pry"
 
 ## Subcommands to add?
 #
 #  * Show a given page of posts.
-#  * Add a new post.
+#  * Add a new post. (DONE)
 #  * Edit post tags.
 #  * Find posts in a given month.
 #  * Show top tags used, months posted in, etc.
@@ -21,6 +22,31 @@ require "pry"
 
 module Blahg
   class App < Thor
+
+    desc "add NAME", "Add a post to the database."
+    option :date, :aliases => :d, :default => DateTime.now.to_s
+    option :tags, :aliases => :t, :type => :array
+    option :format, :aliases => :f, :default => "cmdline"
+    def add(name)
+      puts "Creating blog post #{name}"
+      puts "What is the content of the blog post?"
+      content = STDIN.gets.chomp
+      post = Post.create(title: name,
+                         date: options[:date],
+                         format: options[:format],
+                         content: content)
+      puts "Created new post: #{post}"
+    end
+
+    desc "show", "Show a page of blog posts."
+    option :page, :aliases => :p, :default => 1, :type => :numeric
+    def show
+      puts "Page #{options[:page]} of this blaaaaahg."
+      posts = Post.first(10)
+      posts.each do |post|
+        puts "Title: #{post.title}, Written: #{post.date}, Tags: #{post.tags}"
+      end
+    end
 
     desc "import DIRECTORY", "Import all blog posts from DIRECTORY."
     def import(directory)
@@ -41,5 +67,5 @@ module Blahg
   end
 end
 
-binding.pry
+# binding.pry
 Blahg::App.start(ARGV)
