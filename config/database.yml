@@ -1,4 +1,4 @@
 adapter: sqlite3
-database: db/blahg.yml
+database: db/blahg.db
 pool: 5
 timeout: 1000
