@@ -1,5 +1,13 @@
 require "blahg/version"
+require "blahg/init_db"
+
+require "thor"
+require "pry"
 
 module Blahg
-  # Your code goes here...
+  class App < Thor
+  end
 end
+
+# binding.pry
+Blahg::App.start(ARGV)
