@@ -35,6 +35,7 @@ module Blahg
           @posts << self.import_post(f)
         end
       end
+      @posts
     end
   end
 end
