@@ -42,9 +42,10 @@ module Blahg
     option :page, :aliases => :p, :default => 1, :type => :numeric
     def show
       puts "Page #{options[:page]} of this blaaaaahg."
-      posts = Post.first(10)
+      start = options[:page] * 10
+      posts = Post.offset(start).limit(10)
       posts.each do |post|
-        puts "Title: #{post.title}, Written: #{post.date}, Tags: #{post.tags}"
+        puts "Title: #{post.title}, Written: #{post.date}, Tags: #{post.tag_names}"
       end
     end
 
