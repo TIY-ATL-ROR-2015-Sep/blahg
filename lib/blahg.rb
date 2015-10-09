@@ -25,6 +25,7 @@ module Blahg
       end
       puts "#{posts.count} posts imported!"
     end
+
   end
 end
 
