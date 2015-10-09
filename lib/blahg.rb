@@ -12,7 +12,7 @@ require "pry"
 
 ## Subcommands to add?
 #
-#  * Show a given page of posts.
+#  * Show a given page of posts. (DONE)
 #  * Add a new post. (DONE)
 #  * Edit post tags.
 #  * Find posts in a given month.
@@ -40,10 +40,19 @@ module Blahg
 
     desc "show", "Show a page of blog posts."
     option :page, :aliases => :p, :default => 1, :type => :numeric
+    option :sort, :aliases => :s, :default => "title", :enum => ["title", "date"]
     def show
       puts "Page #{options[:page]} of this blaaaaahg."
-      start = options[:page] * 10
-      posts = Post.offset(start).limit(10)
+
+      page = options[:page] - 1
+      if options[:sort] == "title"
+        order = "title"
+      else
+        order = "date DESC"
+      end
+
+      posts = Post.order(order).offset(page * 10).limit(10)
+
       posts.each do |post|
         puts "Title: #{post.title}, Written: #{post.date}, Tags: #{post.tag_names}"
       end
